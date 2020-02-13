@@ -1,0 +1,9 @@
+Name:           can
+Version:        0.0
+Cabal-Version:  >= 1.6
+Build-Type:     Simple
+
+executable can
+  main-is: can.hs
+  build-depends: base, containers, SDL, SDL-image, random
+  other-modules: Cards Events Gui Logic
