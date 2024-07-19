@@ -30,8 +30,7 @@ newgame :: IO ()
 newgame = getVideoSurface >>= \screen ->
   drawBackground screen >>
   shuffle stapel >>= \stack ->
-  let pg = playground stack
-  in drawField pg screen >> keyHandler pg
+  keyHandler $ playground stack
 
 shuffle :: [a] -> IO [a]
 shuffle = shuffle' []
@@ -44,12 +43,12 @@ shuffle = shuffle' []
 keyHandler :: Playground -> IO ()
 keyHandler pg = getVideoSurface >>= \screen ->
   drawField pg screen >>
-  waitEvent >>= \e->
+  waitEventBlocking >>= \e->
   unless (e == Quit) $
   let ekey = extractKey e in
     basicHandler ekey pg screen
       ( if ekey `elem` [SDLK_a,SDLK_s,SDLK_d,SDLK_f,SDLK_g,SDLK_t]
-        then waitEvent >>= \f ->
+        then waitEventBlocking >>= \f ->
           let fkey = extractKey f in
             basicHandler fkey pg screen
               ( if fkey `elem` [SDLK_a,SDLK_s,SDLK_d,SDLK_f,SDLK_q,SDLK_w,SDLK_e,SDLK_r]
